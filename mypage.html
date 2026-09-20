@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Saidjon | Learning backend development</title>
+  <meta name="description" content="Saidjon is a self-taught developer learning backend development with JavaScript, Node.js and Go. Projects, skills and links.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#17389b">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2317389b'/%3E%3Ctext x='16' y='23' font-size='20' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='%23ffffff'%3ES%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=JetBrains+Mono:wght@400;500&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script>document.documentElement.classList.add('js');</script>
+
+  <style>
+    :root {
+      --cobalt: #17389b;
+      --cobalt-deep: #0e2470;
+      --turquoise: #5fd6c8;
+      --saffron: #f4c04e;
+
+      --paper: #eef3f2;
+      --ink: #0f1a3a;
+      --muted: #51607f;
+      --line: #c5d1df;
+      --link: #17389b;
+      --focus: #17389b;
+
+      --live-bg: #d3f4ee;  --live-fg: #0b5e55;
+      --wip-bg: #fbeec6;   --wip-fg: #6b4a00;
+      --chip-bg: #ffffff;
+
+      --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+      --text: "Onest", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --code: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #0a1129;
+        --ink: #e9eefb;
+        --muted: #9aa8c9;
+        --line: #26325a;
+        --link: #8fb0ff;
+        --focus: #8fb0ff;
+
+        --live-bg: #12403d;  --live-fg: #8ceadd;
+        --wip-bg: #4a3a0f;   --wip-fg: #f4c04e;
+        --chip-bg: #111a3a;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 400 1.0625rem/1.6 var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--link); text-underline-offset: 0.2em; }
+    a:hover { text-decoration-thickness: 2px; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+
+    .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+
+    /* ---------- Hero ---------- */
+    .hero { background: var(--cobalt); color: #f3f6ff; }
+    .hero :focus-visible { outline-color: var(--saffron); }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-block: 1.5rem;
+    }
+    .brand {
+      font: 700 1.3rem/1 var(--display);
+      letter-spacing: -0.01em;
+      color: inherit;
+      text-decoration: none;
+    }
+    .topbar nav { display: flex; gap: 1.5rem; }
+    .topbar nav a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      padding-block: 0.15rem;
+    }
+    .topbar nav a:hover { border-bottom-color: var(--saffron); }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: clamp(2rem, 5vw, 4.5rem);
+      align-items: center;
+      padding-block: clamp(2.5rem, 7vw, 5rem) clamp(3rem, 8vw, 6rem);
+    }
+
+    h1 {
+      margin: 0 0 1.25rem;
+      font: 700 clamp(2.5rem, 6.2vw, 4.75rem)/1.02 var(--display);
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+    .lede {
+      max-width: 34rem;
+      margin: 0 0 2rem;
+      font-size: 1.1875rem;
+      color: #dbe4ff;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.75rem 1.4rem;
+      border: 1.5px solid transparent;
+      border-radius: 999px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-solid { background: #f3f6ff; color: var(--cobalt); }
+    .btn-solid:hover { background: var(--saffron); color: #0f1a3a; }
+    .btn-line { border-color: rgba(243, 246, 255, 0.55); color: #f3f6ff; }
+    .btn-line:hover { background: rgba(255, 255, 255, 0.12); }
+
+    /* Request / response panel */
+    .console {
+      background: var(--cobalt-deep);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.55);
+      min-width: 0;
+    }
+    .console-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.8rem 1.1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      font: 500 0.9rem/1.4 var(--code);
+    }
+    .request { display: flex; gap: 0.6rem; min-width: 0; }
+    .method { color: var(--saffron); }
+    .path { color: #f3f6ff; overflow-wrap: anywhere; }
+    .bar-end { display: flex; align-items: center; gap: 0.9rem; flex-shrink: 0; }
+    .status { color: var(--turquoise); }
+
+    .replay {
+      font: 500 0.8125rem/1 var(--text);
+      color: #dbe4ff;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      padding: 0.4rem 0.7rem;
+      cursor: pointer;
+    }
+    .replay:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .console pre {
+      margin: 0;
+      padding: 1.25rem 1.25rem 1.5rem;
+      overflow-x: auto;
+      font: 400 0.9rem/1.75 var(--code);
+      color: #e9efff;
+    }
+    .console code { display: grid; }
+    .k { color: var(--turquoise); }
+    .s { color: #ffffff; }
+    .n { color: var(--saffron); }
+    .p { color: #8ea3e0; }
+
+    /* One orchestrated moment: the response arrives line by line */
+    .js .ln, .js .status { opacity: 0; transition: opacity 0.25s ease; }
+    .js .ln.on, .js .status.on { opacity: 1; }
+
+    /* ---------- Sections ---------- */
+    .section { padding-block: clamp(3.5rem, 8vw, 6rem) 0; }
+    .section:last-of-type { padding-bottom: clamp(3.5rem, 8vw, 6rem); }
+
+    h2 {
+      margin: 0 0 0.75rem;
+      font: 700 clamp(1.8rem, 3.6vw, 2.5rem)/1.1 var(--display);
+      letter-spacing: -0.02em;
+    }
+    .section-note { max-width: 38rem; margin: 0 0 2.5rem; color: var(--muted); }
+
+    /* Projects */
+    .project {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: 1rem clamp(1.5rem, 4vw, 3rem);
+      padding-block: 1.75rem;
+      border-top: 1px solid var(--line);
+    }
+    .project:last-child { border-bottom: 1px solid var(--line); }
+
+    .project-head { display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; gap: 0.6rem; }
+    h3 { margin: 0; font: 600 1.5rem/1.2 var(--display); letter-spacing: -0.01em; }
+    .project-body p { margin: 0; max-width: 42rem; }
+
+    .tag {
+      padding: 0.15rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+    .tag-live { background: var(--live-bg); color: var(--live-fg); }
+    .tag-wip  { background: var(--wip-bg);  color: var(--wip-fg); }
+
+    .stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+    .stack li {
+      padding: 0.15rem 0.6rem;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--chip-bg);
+      font-size: 0.8125rem;
+      font-weight: 500;
+    }
+    .project-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+    .project-links a { font-weight: 600; }
+
+    /* Skills */
+    .skills { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 1.5rem clamp(1.5rem, 4vw, 3rem); }
+    .skills-intro p { margin: 0; max-width: 26rem; color: var(--muted); }
+    .skill-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+    .skill-groups h3 { margin-bottom: 0.75rem; font-size: 1.25rem; }
+    .skill-groups ul { margin: 0; padding: 0; list-style: none; }
+    .skill-groups li { padding-block: 0.5rem; border-top: 1px solid var(--line); }
+    .skill-groups li small { display: block; color: var(--muted); font-size: 0.9375rem; }
+    .study-note { grid-column: 2; margin: 0; color: var(--muted); }
+
+    /* Contact */
+    .links { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .links li { border-bottom: 1px solid var(--line); }
+    .links a {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.25rem 1.5rem;
+      padding: 1.1rem 0;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .l-name { font: 600 clamp(1.4rem, 3vw, 1.9rem)/1.2 var(--display); letter-spacing: -0.01em; }
+    .l-desc { color: var(--muted); }
+    .links a:hover .l-name {
+      text-decoration: underline;
+      text-decoration-color: var(--saffron);
+      text-decoration-thickness: 3px;
+      text-underline-offset: 0.2em;
+    }
+
+    footer { padding-block: 2rem 3rem; color: var(--muted); font-size: 0.9375rem; }
+
+    /* ---------- Small screens ---------- */
+    @media (max-width: 860px) {
+      .hero-grid { grid-template-columns: minmax(0, 1fr); }
+      .skills { grid-template-columns: minmax(0, 1fr); }
+      .study-note { grid-column: 1; }
+    }
+    @media (max-width: 720px) {
+      .project { grid-template-columns: minmax(0, 1fr); padding-block: 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: calc(100% - 2rem); }
+      .skill-groups { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+      .console pre { padding: 1.1rem 1rem 1.25rem; font-size: 0.75rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .ln, .js .status { transition: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="topbar">
+        <a class="brand" href="#top" id="top">Saidjon</a>
+        <nav aria-label="Page sections">
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <h1>Learning backend development by building real things.</h1>
+          <p class="lede">I'm Saidjon, a self-taught developer. I started in the browser with HTML, CSS and JavaScript, and I'm now moving to the server side with Node.js and Go.</p>
+          <div class="hero-actions">
+            <a class="btn btn-solid" href="#projects">See projects</a>
+            <a class="btn btn-line" href="https://github.com/sdvp-3">Open GitHub</a>
+          </div>
+        </div>
+
+        <section class="console" aria-label="A sample API response describing Saidjon">
+          <div class="console-bar">
+            <div class="request"><span class="method">GET</span><span class="path">/saidjon</span></div>
+            <div class="bar-end">
+              <span class="status" id="status">200 OK</span>
+              <button class="replay" id="replay" type="button">Send again</button>
+            </div>
+          </div>
+          <pre id="response">
+            <code>
+<span class="ln"><span class="p">{</span></span>
+<span class="ln">  <span class="k">"name"</span><span class="p">:</span> <span class="s">"Saidjon"</span><span class="p">,</span></span>
+<span class="ln">  <span class="k">"role"</span><span class="p">:</span> <span class="s">"self-taught developer"</span><span class="p">,</span></span>
+<span class="ln">  <span class="k">"focus"</span><span class="p">:</span> <span class="s">"backend"</span><span class="p">,</span></span>
+<span class="ln">  <span class="k">"knows"</span><span class="p">:</span> <span class="p">[</span><span class="s">"HTML"</span><span class="p">,</span><span class="s">"CSS"</span><span class="p">,</span><span class="s">"JavaScript"</span><span class="p">,</span><span class="s">"Git"</span><span class="p">],</span></span>
+<span class="ln">  <span class="k">"learning"</span><span class="p">:</span> <span class="p">[</span><span class="s">"Node.js"</span><span class="p">,</span><span class="s">"NestJS"</span><span class="p">,</span><span class="s">"Go"</span><span class="p">],</span></span>
+<span class="ln">  <span class="k">"projects"</span><span class="p">:</span> <span class="n" id="project-count">4</span></span>
+<span class="ln"><span class="p">}</span></span>
+</code>
+</pre>
+        </section>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="wrap">
+        <h2 id="projects-title">Projects</h2>
+        <p class="section-note">Small projects, each built to practice one specific thing.</p>
+
+        <!-- TODO: replace each GitHub link below with the exact repository URL. -->
+        <div>
+          <article class="project">
+            <div class="project-head">
+              <h3>Amazon-style store</h3>
+            </div>
+            <div class="project-body">
+              <p>A shopping site modeled on Amazon's storefront, built with plain HTML, CSS and JavaScript.</p>
+              <ul class="stack" aria-label="Technologies">
+                <li>HTML</li><li>CSS</li><li>JavaScript</li>
+              </ul>
+              <ul class="project-links">
+                <li><a href="https://github.com/sdvp-3">Code on GitHub</a></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-head">
+              <h3>Unit converter</h3>
+              <span class="tag tag-live">Live</span>
+            </div>
+            <div class="project-body">
+              <p>Converts values in both directions and switches between light and dark themes using CSS custom properties.</p>
+              <ul class="stack" aria-label="Technologies">
+                <li>HTML</li><li>CSS</li><li>JavaScript</li>
+              </ul>
+              <ul class="project-links">
+                <li><a href="https://sdvp-3.github.io/converter/">Open live site</a></li>
+                <li><a href="https://github.com/sdvp-3">Code on GitHub</a></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-head">
+              <h3>Memory card game</h3>
+            </div>
+            <div class="project-body">
+              <p>A card-matching game. I used it to practice DOM manipulation and game state, like locking the board while two cards are compared.</p>
+              <ul class="stack" aria-label="Technologies">
+                <li>HTML</li><li>CSS</li><li>JavaScript</li>
+              </ul>
+              <ul class="project-links">
+                <li><a href="https://github.com/sdvp-3">Code on GitHub</a></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-head">
+              <h3>Voice assistant</h3>
+              <span class="tag tag-wip">In progress</span>
+            </div>
+            <div class="project-body">
+              <p>A Python voice assistant that answers spoken questions. I'm adapting an open-source project and learning how its speech and AI API calls fit together.</p>
+              <ul class="stack" aria-label="Technologies">
+                <li>Python</li><li>Anthropic API</li><li>ElevenLabs</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills" aria-labelledby="skills-title">
+      <div class="wrap">
+        <div class="skills">
+          <div class="skills-intro">
+            <h2 id="skills-title">Skills</h2>
+            <p>I chose backend because I enjoy logic and problem-solving. It's the same thing I like about chess.</p>
+          </div>
+
+          <div class="skill-groups">
+            <div>
+              <h3>Comfortable with</h3>
+              <ul>
+                <li>HTML and CSS<small>Grid, media queries, custom properties</small></li>
+                <li>JavaScript<small>DOM, arrays, state</small></li>
+                <li>Git and GitHub</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Learning now</h3>
+              <ul>
+                <li>Node.js and NestJS</li>
+                <li>Go</li>
+                <li>React</li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="study-note">I study mostly from <a href="https://developer.mozilla.org/en-US/">MDN Web Docs</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <h2 id="contact-title">Contact</h2>
+        <p class="section-note">The fastest way to reach me is LinkedIn or Discord.</p>
+
+        <ul class="links">
+          <li><a href="https://github.com/sdvp-3"><span class="l-name">GitHub</span><span class="l-desc">Code and projects</span></a></li>
+          <li><a href="https://www.linkedin.com/in/saidjon-kuziev-966a96405/"><span class="l-name">LinkedIn</span><span class="l-desc">Professional profile</span></a></li>
+          <li><a href="https://discord.com/users/1521162438957994195"><span class="l-name">Discord</span><span class="l-desc">Send me a message</span></a></li>
+          <li><a href="https://medium.com/@sdu0b.dev"><span class="l-name">Medium</span><span class="l-desc">Articles</span></a></li>
+          <li><a href="https://t.me/korean_listeningg"><span class="l-name">Telegram</span><span class="l-desc">Korean listening materials</span></a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Designed and built by Saidjon.</div>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var lines = Array.prototype.slice.call(document.querySelectorAll('#response .ln'));
+      var status = document.getElementById('status');
+      var replay = document.getElementById('replay');
+      var counter = document.getElementById('project-count');
+      var timers = [];
+
+      // Keep the "projects" number in the response equal to the projects listed below.
+      if (counter) {
+        counter.textContent = document.querySelectorAll('#projects .project').length;
+      }
+
+      function stop() {
+        timers.forEach(clearTimeout);
+        timers = [];
+      }
+
+      function show(el) { el.classList.add('on'); }
+
+      function play() {
+        stop();
+        lines.forEach(function (l) { l.classList.remove('on'); });
+        status.classList.remove('on');
+
+        if (reduce) {
+          lines.forEach(show);
+          show(status);
+          return;
+        }
+
+        var t = 350;
+        timers.push(setTimeout(function () { show(status); }, t));
+        t += 250;
+        lines.forEach(function (l) {
+          t += 110;
+          timers.push(setTimeout(function () { show(l); }, t));
+        });
+      }
+
+      if (reduce && replay) { replay.hidden = true; }
+      if (replay) { replay.addEventListener('click', play); }
+      play();
+    })();
+  </script>
+</body>
+</html>
